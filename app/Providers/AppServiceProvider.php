@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Product;
 use App\Models\User;
+use App\Policies\ProductPolicy;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,14 +23,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Gate untuk Penugasan Umum
+        // Gate: hanya admin yang boleh manage product
         Gate::define('manage-product', function (User $user) {
             return $user->role === 'admin';
         });
 
-        // Gate untuk Penugasan Kelas B
+        // Gate: hanya admin yang boleh export product
         Gate::define('export-product', function (User $user) {
             return $user->role === 'admin';
         });
+
+        // Daftarkan ProductPolicy untuk model Product
+        Gate::policy(Product::class, ProductPolicy::class);
     }
 }

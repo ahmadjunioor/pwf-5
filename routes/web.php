@@ -18,15 +18,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/products', [ProductController::class, 'index'])
-    ->middleware('can:manage-product')
-    ->name('products.index');
-
-// Rute untuk Penugasan Kelas B
-Route::get('/products/export', [ProductController::class, 'export'])
-    ->middleware('can:export-product')
-    ->name('products.export');
-    
 Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+// Route yang hanya bisa diakses admin (Gate: manage-product)
+Route::middleware(['auth', 'can:manage-product'])->group(function () {
+    Route::resource('products', \App\Http\Controllers\ProductController::class);
+    Route::resource('categories', \App\Http\Controllers\CategoryController::class);
+});
+
+// Route khusus export yang dilindungi Gate: export-product
+Route::middleware(['auth', 'can:export-product'])->group(function () {
+    Route::get('products/data/export', [\App\Http\Controllers\ProductController::class, 'export'])->name('products.export');
+});
 
 require __DIR__.'/auth.php';
