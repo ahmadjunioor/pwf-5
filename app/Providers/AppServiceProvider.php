@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        // Gate untuk Penugasan Umum
+        Gate::define('manage-product', function (User $user) {
+            return $user->role === 'admin';
+        });
+
+        // Gate untuk Penugasan Kelas B
+        Gate::define('export-product', function (User $user) {
+            return $user->role === 'admin';
+        });
+    }
+}
