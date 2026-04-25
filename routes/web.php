@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,6 +25,7 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::middleware(['auth', 'can:manage-product'])->group(function () {
     Route::resource('products', \App\Http\Controllers\ProductController::class);
     Route::resource('categories', \App\Http\Controllers\CategoryController::class);
+    Route::resource('category', CategoryController::class);
 });
 
 // Route khusus export yang dilindungi Gate: export-product

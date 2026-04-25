@@ -1,66 +1,56 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Add Product') }}
-        </h2>
-    </x-slot>
-
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-[#1f2937] overflow-hidden shadow-sm sm:rounded-lg border border-gray-700">
+                <div class="p-8 text-gray-100">
                     
+                    <div class="flex items-center mb-8">
+                        <a href="{{ route('products.index') }}" class="mr-4 text-gray-400 hover:text-white transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            </svg>
+                        </a>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Add Product</h2>
+                            <p class="text-gray-400 text-sm mt-1">Fill in the details to add a new product</p>
+                        </div>
+                    </div>
+
                     <form action="{{ route('products.store') }}" method="POST">
                         @csrf
-
-                        <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-                            <input type="text" name="name" id="name" value="{{ old('name') }}" 
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                            @error('name')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
+                        
+                        <div class="mb-6">
+                            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Nama Produk</label>
+                            <input type="text" name="name" id="name" class="w-full bg-[#111827] border border-gray-600 text-white rounded-md shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 p-3" placeholder="e.g. Wireless Headphones" required>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="qty" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Quantity</label>
-                            <input type="number" name="qty" id="qty" value="{{ old('qty') }}"
-
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                            @error('qty')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
-                            <input type="number" step="0.01" name="price" id="price" value="{{ old('price') }}" 
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                            @error('price')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Owner</label>
-                            <select name="user_id" id="user_id" 
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm">
-                                <option value="">-- Select Owner --</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>{{ $user->name }} ({{ $user->email }})</option>
+                        <div class="mb-6">
+                            <label for="category_id" class="block text-sm font-medium text-gray-300 mb-2">Kategori</label>
+                            <select name="category_id" id="category_id" class="w-full bg-[#111827] border border-gray-600 text-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 p-3" required>
+                                <option value="" disabled selected>-- Pilih Kategori --</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                            @error('user_id')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
                         </div>
 
-                        <div class="flex items-center justify-end mt-4">
-                            <a href="{{ route('products.index') }}" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <label for="qty" class="block text-sm font-medium text-gray-300 mb-2">Quantity</label>
+                                <input type="number" name="qty" id="qty" class="w-full bg-[#111827] border border-gray-600 text-white rounded-md shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 p-3" value="0" min="0" required>
+                            </div>
+                            <div>
+                                <label for="price" class="block text-sm font-medium text-gray-300 mb-2">Price (Rp)</label>
+                                <input type="number" name="price" id="price" class="w-full bg-[#111827] border border-gray-600 text-white rounded-md shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 p-3" value="0" min="0" required>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-4 pt-4">
+                            <a href="{{ route('products.index') }}" class="px-5 py-2.5 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-transparent hover:bg-gray-700 focus:outline-none transition">
                                 Cancel
                             </a>
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded text-white text-sm font-medium">
-                                Submit
+                            <button type="submit" class="px-5 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none transition">
+                                Save Product
                             </button>
                         </div>
                     </form>

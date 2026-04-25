@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,10 +16,13 @@ class ProductController extends Controller
     }
 
     public function create()
-    {
-        $users = \App\Models\User::all();
-        return view('products.create', compact('users'));
-    }
+{
+    // Mengambil semua data kategori dari database
+    $categories = Category::all(); 
+    
+    // Mengirim data kategori ke halaman form create
+    return view('products.create', compact('categories'));
+}
 
     public function store(Request $request)
     {

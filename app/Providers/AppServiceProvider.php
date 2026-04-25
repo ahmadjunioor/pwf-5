@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Product;
+use App\Models\category;
 use App\Models\User;
 use App\Policies\ProductPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -35,5 +36,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Daftarkan ProductPolicy untuk model Product
         Gate::policy(Product::class, ProductPolicy::class);
+
+        Gate::define('isAdmin', function (User $user) {
+            return $user->role === 'admin';
+        });
     }
 }
